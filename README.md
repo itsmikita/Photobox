@@ -13,6 +13,6 @@ How to use
 
 * Download latest version
 * Add `photobox.js` to your `<head>`
-* Add this piece of code to your `$( '.gallery a' ).photobox()` to make add anchors withing class `.gallery` to your supadupa responsive gallery
+* Add this piece of code `$( '.gallery a' ).photobox()` to your `onload`-event to make add anchors withing class `.gallery` to your supadupa responsive gallery
 
 See the source for details while waiting for better documentation.
