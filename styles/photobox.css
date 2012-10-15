@@ -1,0 +1,179 @@
+/**
+ * @file: photobox.css
+ *
+ * Author: Nikita Stankevich
+ * URL: http://miketoss.com/trunk/photobox/
+ * Version: 0.1
+ *
+ * Responsive theming Photobox with support for Retina displays.
+ */
+
+
+/* Desktop */
+#photobox, #photobox .photobox-title, #photobox .photobox-controls {
+	position: fixed;
+	width: 100%;
+}
+#photobox {
+	background: rgba( 22, 22, 22, 0.5 );
+	height: 100%;
+	left: 0;
+	overflow: hidden;
+	top: 0;
+	z-index: 70000;
+}
+#photobox .photobox-title {
+	color: white;
+	font-size: 16px;
+	line-height: 16px;
+	text-align: center;
+	bottom: 0;
+	z-index: 71000;
+}
+#photobox .photobox-title span {
+	background: rgb( 22, 22, 22 );
+	border-radius: 15px;
+	display: inline-block;
+	margin-bottom: 12px;
+	padding: 6px 18px;
+}
+#photobox .photobox-controls {
+	z-index: 71000;
+}
+#photobox .photobox-button-close span, #photobox .photobox-button-next span, #photobox .photobox-button-prev span {
+	background-image: url( ../images/ui-desktop.png );
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+#photobox .photobox-button-close {
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+#photobox .photobox-button-close span {
+	background-position: 0 0;
+	display: inline-block;
+	height: 24px;
+	margin: 18px;
+	width: 24px;
+}
+#photobox .photobox-button-prev {
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+}
+#photobox .photobox-button-prev span {
+	background-position: -24px center;
+	display: inline-block;
+	height: 100%;
+	margin: 0 18px;
+	width: 24px;
+}
+#photobox .photobox-button-next {
+	height: 100%;
+	right: 0;
+	position: fixed;
+	top: 0;
+}
+#photobox .photobox-button-next span {
+	background-position: -48px center;
+	display: inline-block;
+	height: 100%;
+	margin: 0 18px;
+	width: 24px;
+}
+#photobox .photobox-wrapper {
+	height: 100%;
+	left: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 100%;
+}
+#photobox .photobox-wrapper.animate { -webkit-transition: all 300ms; }
+#photobox .photobox-placeholder {
+	background: url( ../images/loading.gif ) center no-repeat;
+	display: inline-block;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	/*text-align: center;*/
+	width: 100%;
+}
+#photobox .photobox-placeholder img {
+	box-shadow: 0 5px 10px rgba( 0, 0, 0, 1 );
+	display: inline-block;
+	margin: auto 0;
+	max-height: 100%;
+	max-width: 100%;
+	position: absolute;
+}
+
+/* Phone & Tablet */
+@media only screen and ( max-width: 480px ) and ( max-width: 1024px ) {
+	#photobox { background: rgb( 22, 22, 22 ); }
+	#photobox .photobox-title {
+		background: -webkit-linear-gradient( top, rgba( 35, 35, 35, 0.8 ), rgba( 22, 22, 22, 0.8 ) );
+		border-bottom: 1px solid #3c3c3c;
+		padding: 12px 0;
+		bottom: auto;
+		top: 0;
+	}
+	#photobox .photobox-title span {
+		background: transparent;
+		margin: 0;
+	}
+	#photobox .photobox-controls {
+		background: -webkit-linear-gradient( top, rgb( 35, 35, 35 ), rgb( 22, 22, 22 ) );
+		border-top: 1px solid #3c3c3c;
+		bottom: 0;
+		color: white;
+		opacity: 0.8;
+		text-align: center;
+		width: 100%;
+	}
+	#photobox .photobox-button-close, #photobox .photobox-button-next, #photobox .photobox-button-prev {
+		display: inline-block;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-color: transparent;
+		height: 41px;
+		position: static;
+		text-align: center;
+		width: 32%;
+	}
+	#photobox .photobox-button-close span, #photobox .photobox-button-next span, #photobox .photobox-button-prev span {
+		background-image: url( ../images/ui-mobile.png );
+		background-position: 0 0;
+		background-repeat: no-repeat;
+		display: inline-block;
+		height: 24px;
+		margin: 8px 0 0;
+		width: 24px;
+	}
+	#photobox .photobox-button-close span {
+		background-position: 0 0;
+	}
+	#photobox .photobox-button-prev span {
+		background-position: 0 -24px;
+	}
+	#photobox .photobox-button-next span {
+		background-position: 0 -48px;
+	}
+}
+
+/* Desktop with Retina */
+@media only screen and ( -webkit-min-device-pixel-ratio: 2 ) and ( min-width: 1025px ) {
+	#photobox .photobox-button-close span, #photobox .photobox-button-next span, #photobox .photobox-button-prev span {
+		background-image: url( ../images/ui-desktop-retina.png );
+		background-size: 100%; /* required to display right ratio */
+	}
+}
+
+/* Phone & Tablet with Retina */
+@media only screen and ( -webkit-min-device-pixel-ratio: 2 ) and ( max-width: 480px ) and ( max-width: 1024px ) {
+	#photobox .photobox-button-close span, #photobox .photobox-button-next span, #photobox .photobox-button-prev span {
+		background-image: url( ../images/ui-mobile-retina.png );
+		background-size: 100%; /* required to display right ratio */
+	}
+}

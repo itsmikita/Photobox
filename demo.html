@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" class="photobox">
+<head>
+
+<title>Photobox - Responsive image gallery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="demo.css" type="text/css" />
+<link rel="stylesheet" href="styles/photobox.css" type="text/css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="scripts/photobox.js"></script>
+<script type="text/javascript">
+	// on window load
+	jQuery( function( $ ) {
+		$( '.gallery a' ).photobox();
+	} );
+</script>
+
+</head>
+<body>
+
+<div id="debug"></div>
+
+<ul class="gallery">
+	<li><a href="photos/001.jpg" title="Image 001"><img src="photos/001-1.jpg" /></a></li>
+	<li><a href="photos/002.jpg" title="Image 002"><img src="photos/002-1.jpg" /></a></li>
+	<li><a href="photos/003.jpg" title="Image 003"><img src="photos/003-1.jpg" /></a></li>
+	<li><a href="photos/004.jpg" title="Image 004"><img src="photos/004-1.jpg" /></a></li>
+	<li><a href="photos/005.jpg" title="Image 005"><img src="photos/005-1.jpg" /></a></li>
+	<li><a href="photos/006.jpg" title="Image 006"><img src="photos/006-1.jpg" /></a></li>
+</ul>
+
+</body>
+</html>
