@@ -7,19 +7,6 @@
  */
 
 ;( function( $ ) {
-	// debug
-	function debug( mixed ) {
-		var string = '';
-		
-		if( 'object' == typeof mixed )
-			for( key in mixed )
-				string = string + key + ' : ' + mixed[ key ] + ', ';
-		else
-			string = mixed;
-		
-		$( '#debug' ).text( string );
-	}
-	
 	/**
 	 * Constructor
 	 */
