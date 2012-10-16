@@ -6,7 +6,7 @@ This is a responsive jQuery image gallery plugin with support for tocuh events.
 Demo
 ----
 
-View live demo: http://designed.bymikita.com/photobox/demo.html
+View live demo: http://designed.bymikita.com/photobox/example/
 
 How to use
 ----------
