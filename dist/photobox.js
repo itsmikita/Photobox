@@ -6,7 +6,7 @@
  * Version: 0.1
  */
 
-;( function( $ ) {
+;( function( $, window, document, undefined ) {
 	/**
 	 * Constructor
 	 */
@@ -375,4 +375,4 @@
 	};
 	
 	//window.Photobox = Photobox;
-} )( jQuery );
+} )( jQuery, window, document );
