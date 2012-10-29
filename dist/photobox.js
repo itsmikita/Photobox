@@ -3,7 +3,7 @@
  *
  * Author: Mikita Stankiewicz
  * URL: http://designed.bymikita.com/photobox/
- * Version: 0.1
+ * Version: 0.2
  */
 
 ;( function( $, window, document, undefined ) {
@@ -19,13 +19,10 @@
 	 * Photobox prototype
 	 */
 	Photobox.prototype = {
-		/**
-		 * Some vars
-		 */
 		cache: [],
 		items: [],
 		current: 0,
-		is_gallery: true,
+		isGallery: true, // wether it is a single image or multiple
 		defaults: {},
 		options: {},
 		config: {},
@@ -52,6 +49,10 @@
 		
 		/**
 		 * Load image
+		 *
+		 * Loads selected item into Photobox.
+		 *
+		 * @param int n - Index of the item
 		 */
 		load: function( n ) {
 			this.title( n );
@@ -88,7 +89,7 @@
 			if( -1 !== $.inArray( src, this.cache ) )
 				return i();
 			
-			// preload
+			// do preload
 			// NOTE: IE loads image right after defining the src
 			var PB = this;
 			var image = new Image();
@@ -101,11 +102,11 @@
 		},
 		
 		/**
-		 * Put title
+		 * Title
 		 *
-		 * Puts title from image's title attribute in Photobox header.
+		 * Puts title from image's title attribute in Photobox title.
 		 *
-		 * @param int n - Index of the image.
+		 * @param int n - Index of the item
 		 */
 		title: function( n ) {
 			var title = this.$items.eq( n ).attr( 'title' );
@@ -114,18 +115,22 @@
 		},
 		
 		/**
-		 * Clean up
+		 * Clear
+		 *
+		 * Removes #photobox markup to avoid conflicts.
 		 */
-		cleanup: function() {
+		clear: function() {
 			// so far
 			$( '#photobox' ).remove();
 		},
 		
 		/**
 		 * Setup
+		 *
+		 * Appends #photobox markup.
 		 */
 		setup: function() {
-			this.cleanup();
+			this.clear();
 			
 			var PB = this;
 			
@@ -161,7 +166,7 @@
 			
 			// toggle controls
 			$( '.photobox-wrapper' ).bind( 'tap click', function( e ) {
-				PB.toggle_meta();
+				PB.toggleMeta();
 			} );
 		},
 		
@@ -219,7 +224,7 @@
 		/**
 		 * Enable touch support
 		 *
-		 * Supports swipe and zoom.
+		 * Supports swipe and zoom/pinch.
 		 */
 		touchable: function() {
 			var PB = this,
@@ -256,7 +261,7 @@
 				$( this ).addClass( 'animate' ).css( 'left', n * -100 + '%' );
 			} );
 			
-			/* TODO:
+			/* Not working properly. TODO: Edit this
 			// zoom/pinch
 			$( '#photobox .photobox-placeholder img' ).bind( 'gesturechange', function( e ) {
 				var scale = e.originalEvent.scale;
@@ -272,7 +277,7 @@
 		/**
 		 * Open
 		 *
-		 * @param int n - ( optional ) Index of item to show
+		 * @param int n - ( optional ) Index of the item to show
 		 */
 		open: function( n ) {
 			this.setup();
@@ -297,13 +302,18 @@
 		 */
 		close: function() {
 			// so far
-			this.cleanup();
+			this.clear();
 		},
 		
 		/**
 		 * Prev
+		 *
+		 * Show previuos image.
 		 */
 		prev: function() {
+			if( ! this.isGallery )
+				return false;
+			
 			this.current--;
 			
 			if( 0 > this.current )
@@ -320,8 +330,13 @@
 		
 		/**
 		 * Next
+		 *
+		 * Show next image.
 		 */
 		next: function() {
+			if( ! this.is_gallery )
+				return false;
+			
 			this.current++;
 			
 			if( this.items.length - 1 < this.current )
@@ -345,9 +360,10 @@
 		/**
 		 * Toggle meta
 		 *
+		 * Toggles meta.
 		 * TODO: figure out better implementation
 		 */
-		toggle_meta: function() {
+		toggleMeta: function() {
 			$( '#photobox .photobox-title, #photobox .photobox-controls' ).fadeToggle( 100 );
 		},
 		
@@ -356,7 +372,7 @@
 		 *
 		 * TODO: figure out better implementation
 		 */
-		fadeout_meta: function() {
+		fadeoutMeta: function() {
 			$( '#photobox .photobox-title, #photobox .photobox-controls' ).fadeOut( 100 );
 		}
 	};
