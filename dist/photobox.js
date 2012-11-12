@@ -3,7 +3,7 @@
  *
  * Author: Mikita Stankiewicz
  * URL: http://designed.bymikita.com/photobox/
- * Version: 0.3
+ * Version: 0.4
  */
 
 ;( function( $, window, document, undefined ) {
@@ -23,6 +23,7 @@
 		items: [],
 		current: 0,
 		isGallery: true, // wether it is a single image or multiple
+		useDots: false, // implementation of jQuery Dots
 		defaults: {},
 		options: {},
 		config: {},
@@ -34,15 +35,18 @@
 			// config
 			this.config = $.extend( {}, this.defaults, this.options );
 			
-			var PB = this;
+			if( $().dots )
+				this.useDots = true;
+			
+			var self = this;
 			
 			this.$items.each( function( n ) {
-				PB.items.push( $( this ).attr( 'href' ) );
+				self.items.push( $( this ).attr( 'href' ) );
 				
 				$( this ).click( function( e ) {
 					e.preventDefault();
 					
-					PB.open( n );
+					self.open( n );
 				} );
 			} );
 		},
@@ -61,9 +65,15 @@
 			if( '' != $( '#photobox .photobox-placeholder' ).eq( n ).html() )
 				return;
 			
+			if( true == this.useDots )
+				$( '#photobox .photobox-placeholder' ).eq( n ).dots();
+			
 			var src = this.$items.eq( n ).attr( 'href' );
 			
 			function i() {
+				if( true == this.useDots )
+					$( '#photobox .photobox-placeholder' ).eq( n ).dots( 'destroy' );
+				
 				$( '#photobox .photobox-placeholder' ).eq( n ).html( $( '<img />' ).attr( 'src', src ) );
 				
 				setTimeout( function() {
@@ -91,10 +101,10 @@
 			
 			// do preload
 			// NOTE: IE loads image right after defining the src
-			var PB = this;
+			var self = this;
 			var image = new Image();
 			image.onload = function() {
-				PB.cache.push( src );
+				self.cache.push( src );
 				
 				i();
 			};
@@ -132,7 +142,7 @@
 		setup: function() {
 			this.clear();
 			
-			var PB = this;
+			var self = this;
 			
 			// general
 			$( 'body' ).append(
@@ -165,31 +175,34 @@
 			this.touchable();
 			
 			// toggle controls
-			$( '.photobox-wrapper' ).bind( 'tap click', function( e ) {
-				PB.toggleMeta();
+			/*$( '.photobox-wrapper' ).bind( 'click, tap', function( e ) {
+				self.toggleMeta();
 			} );
+			$( '.photobox-wrapper' ).bind( 'mouseup', function( e ) {
+				self.close();
+			} )*/
 		},
 		
 		/**
 		 * Map the controls
 		 */
 		controls: function() {
-			var PB = this;
+			var self = this;
 			
 			$( '#photobox .photobox-button-prev' ).click( function( e ) {
 				e.preventDefault();
 				
-				PB.prev();
+				self.prev();
 			} );
 			$( '#photobox .photobox-button-next' ).click( function( e ) {
 				e.preventDefault();
 				
-				PB.next();
+				self.next();
 			} );
 			$( '#photobox .photobox-button-close' ).click( function( e ) {
 				e.preventDefault();
 				
-				PB.close();
+				self.close();
 			} );
 		},
 		
@@ -197,37 +210,37 @@
 		 * Map keys
 		 */
 		keys: function() {
-			var PB = this;
+			var self = this;
 			
 			$( document ).keydown( function( e ) {
-				PB.fadeout_meta();
+				self.fadeoutMeta();
 				
 				switch( e.keyCode ) {
 					// left
 					case 37:
-						PB.prev();
+						self.prev();
 						break;
 					
 					// right
 					case 39:
-						PB.next();
+						self.next();
 						break;
 					
 					// esc
 					case 27:
-						PB.close();
+						self.close();
 						break;
 				}
 			} );
 		},
 		
 		/**
-		 * Enable touch support
+		 * Touch support
 		 *
 		 * Supports swipe and zoom/pinch.
 		 */
 		touchable: function() {
-			var PB = this,
+			var self = this,
 				offsetX = 0,
 				startX = 0,
 				width = $( window ).width();
@@ -240,28 +253,26 @@
 				startX = e.originalEvent.touches[0].pageX;
 			} ).bind( 'touchmove', function( e ) {
 				e.preventDefault();
-				PB.fadeout_meta();
+				//self.fadeoutMeta();
 				
-				console.log( 'touchmove', ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px' );
-				
-				$( this ).css( 'left', ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px' );
+				//$( this ).css( 'left', ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px' );
+				$( this ).css( '-webkit-transform', 'translateX(' + ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px)' );
 			} ).bind( 'touchend', function() {
 				var n = Math.round( $( this ).position().left / width ) * -1;
 				
-				console.log( 'touchend', $( this ).position().left, width, $( this ).position().left / width, n );
-				
 				if( n < 0 )
 					n = 0;
-				if( n > PB.items.length - 1 )
-					n = PB.items.length - 1;
+				if( n > self.items.length - 1 )
+					n = self.items.length - 1;
 				
-				PB.current = n;
-				PB.load( n );
+				self.current = n;
+				self.load( n );
 				
-				$( this ).addClass( 'animate' ).css( 'left', n * -100 + '%' );
+				//$( this ).addClass( 'animate' ).css( 'left', n * -100 + '%' );
+				$( this ).addClass( 'animate' ).css( '-webkit-transform', 'translateX(' + n * ( width * -1 ) + 'px)' );
 			} );
 			
-			/* Not working properly. TODO: Edit this
+			// Not working properly. TODO: Edit this
 			// zoom/pinch
 			$( '#photobox .photobox-placeholder img' ).bind( 'gesturechange', function( e ) {
 				var scale = e.originalEvent.scale;
@@ -271,7 +282,6 @@
 				
 				$( this ).css( '-webkit-transform', 'scale( ' + scale + ' )' );
 			} );
-			*/
 		},
 		
 		/**
@@ -322,10 +332,11 @@
 			this.load( this.current );
 			
 			// calc offset
-			var offset = this.current * 100 * -1;
+			var offset = this.current * ( $( window ).width() * -1 );
 			
 			// animate
-			$( '.photobox-wrapper' ).addClass( 'animate' ).css( 'left', offset + '%' );
+			//$( '.photobox-wrapper' ).addClass( 'animate' ).css( 'left', offset + '%' );
+			$( '.photobox-wrapper' ).addClass( 'animate' ).css( '-webkit-transform', 'translateX(' + offset + 'px)' );
 		},
 		
 		/**
@@ -334,7 +345,7 @@
 		 * Show next image.
 		 */
 		next: function() {
-			if( ! this.is_gallery )
+			if( ! this.isGallery )
 				return false;
 			
 			this.current++;
@@ -345,7 +356,7 @@
 			this.load( this.current );
 			
 			// calc offset
-			var offset = this.current * 100 * -1;
+			var offset = this.current * ( $( window ).width() * -1 );
 			
 			/*
 			var last = ( this.items.length - 1 ) * 100 * -1;
@@ -354,7 +365,8 @@
 			if( offset == last )
 				offset = last;*/
 			
-			$( '.photobox-wrapper' ).addClass( 'animate' ).css( 'left', offset + '%' );
+			//$( '.photobox-wrapper' ).addClass( 'animate' ).css( 'left', offset + '%' );
+			$( '.photobox-wrapper' ).addClass( 'animate' ).css( '-webkit-transform', 'translateX(' + offset + 'px)' );
 		},
 		
 		/**
