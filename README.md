@@ -11,8 +11,8 @@ This plugin requires jQuery. Grab the latest version here: http://code.jquery.co
 
 ## How to use ##
 
-1. Download Photobox
-2. Include `photobox.min.js` in your `<head>`
-3. Select links to images you want to trigger the gallery like `$( '.gallery a' ).photobox();`
+1. Include jQuery and `photobox.min.js` in your `<head>`
+2. Add links to full source images
+3. Apply Photobox on these links, like `$( 'a.photobox-image' ).photobox();`
 
-See comments in `photobox.js` for details. Any feedback is appreciated.
+See comments in `photobox.js` for details.
