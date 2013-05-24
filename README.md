@@ -33,4 +33,5 @@ __0.3__
 Future plans
 ------------
 * Fix unwanted mobile behavior in latest Android and iOS
+* Simplify JS and CSS
 * Publish on a CDN network
