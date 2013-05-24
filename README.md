@@ -1,18 +1,36 @@
 jQuery Photobox
 ===============
 
-This is a responsive jQuery image gallery plugin with support for tocuh events.
+Photobox is a responsive and mobile optimized gallery slideshow plugin.
 
 Demo: http://designed.bymikita.com/photobox/example/
 
-## Wiki ##
+How to use
+----------
 
-This plugin requires jQuery. Grab the latest version here: http://code.jquery.com
+1. Include jQuery and `photobox.min.js` in your document.
+2. Add links to full source images.
+3. Apply Photobox on these links, like `$( 'a.photobox-image' ).photobox();`.
 
-## How to use ##
+Changelog
+---------
 
-1. Include jQuery and `photobox.min.js` in your `<head>`
-2. Add links to full source images
-3. Apply Photobox on these links, like `$( 'a.photobox-image' ).photobox();`
+__0.1__
+* Main slide methods added
+* Added touch events
+* Added shortcut commands
 
-See comments in `photobox.js` for details.
+__0.2__
+* Removed junk methods, simplified the code
+* Organaized repository
+* Added `photobox.min.js`
+* Updated README.MD
+
+__0.3__
+* Added How-to
+* Updated code standard
+
+Future plans
+------------
+* Fix unwanted mobile behavior in latest Android and iOS
+* Publish on a CDN network
