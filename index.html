@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+
+<head>
+	
+	<meta charset="utf-8">
+	
+	<title>Photobox</title>
+	
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	
+	<link rel="shortcut icon" href="">
+	<link rel="apple-touch-icon" href="">
+	<link rel="apple-touch-icon" sizes="72x72" href="">
+	<link rel="apple-touch-icon" sizes="114x114" href="">
+	<link rel="stylesheet" type="text/css" href="assets/styles/style.css">
+	<link rel="stylesheet" type="text/css" href="photobox.css">
+	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+	<script src="photobox.js"></script>
+	<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	
+</head>
+<body>
+	
+	<article id="content">
+		<div class="wrapper">
+			
+			<hr>
+				
+			<ul class="gallery">
+				<li><a href="assets/photos/001.jpg" title="Image 001"><img src="assets/photos/001-1.jpg" /></a></li>
+				<li><a href="assets/photos/002.jpg" title="Image 002"><img src="assets/photos/002-1.jpg" /></a></li>
+				<li><a href="assets/photos/003.jpg" title="Image 003"><img src="assets/photos/003-1.jpg" /></a></li>
+				<li><a href="assets/photos/004.jpg" title="Image 004"><img src="assets/photos/004-1.jpg" /></a></li>
+				<li><a href="assets/photos/005.jpg" title="Image 005"><img src="assets/photos/005-1.jpg" /></a></li>
+				<li><a href="assets/photos/006.jpg" title="Image 006"><img src="assets/photos/006-1.jpg" /></a></li>
+			</ul>
+			
+			<hr>
+		
+		</div>
+	</article>
+	
+	<script type="text/javascript">
+		$( function() {
+			$( '.gallery a' ).photobox();
+		} );
+	</script>
+</body>
+</html>

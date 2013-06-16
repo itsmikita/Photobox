@@ -41,7 +41,7 @@
 	z-index: 71000;
 }
 #photobox .photobox-button-close span, #photobox .photobox-button-next span, #photobox .photobox-button-prev span {
-	background-image: url( ../images/ui-desktop.png );
+	background-image: url( assets/images/ui-desktop.png );
 	background-position: 0 0;
 	background-repeat: no-repeat;
 }
@@ -92,7 +92,7 @@
 }
 #photobox .photobox-wrapper.animate { -webkit-transition: all 300ms; }
 #photobox .photobox-placeholder {
-	background: url( ../images/loading.gif ) center no-repeat;
+	background: url( assets/images/loading.gif ) center no-repeat;
 	display: inline-block;
 	height: 100%;
 	overflow: hidden;

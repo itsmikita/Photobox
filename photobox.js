@@ -23,7 +23,6 @@
 		items: [],
 		current: 0,
 		isGallery: true, // wether it is a single image or multiple
-		useDots: false, // implementation of jQuery Dots
 		defaults: {},
 		options: {},
 		config: {},
@@ -34,9 +33,6 @@
 		init: function() {
 			// config
 			this.config = $.extend( {}, this.defaults, this.options );
-			
-			if( $().dots )
-				this.useDots = true;
 			
 			var self = this;
 			
@@ -65,15 +61,9 @@
 			if( '' != $( '#photobox .photobox-placeholder' ).eq( n ).html() )
 				return;
 			
-			if( true == this.useDots )
-				$( '#photobox .photobox-placeholder' ).eq( n ).dots();
-			
 			var src = this.$items.eq( n ).attr( 'href' );
 			
 			function i() {
-				if( true == this.useDots )
-					$( '#photobox .photobox-placeholder' ).eq( n ).dots( 'destroy' );
-				
 				$( '#photobox .photobox-placeholder' ).eq( n ).html( $( '<img />' ).attr( 'src', src ) );
 				
 				setTimeout( function() {
