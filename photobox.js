@@ -3,7 +3,7 @@
  *
  * Author: Mikita Stankiewicz
  * URL: http://designed.bymikita.com/photobox/
- * Version: 0.4
+ * Version: 0.5
  */
 
 ;( function( $, window, document, undefined ) {
@@ -22,7 +22,7 @@
 		cache: [],
 		items: [],
 		current: 0,
-		isGallery: true, // wether it is a single image or multiple
+		isGallery: true,
 		defaults: {},
 		options: {},
 		config: {},
@@ -56,6 +56,9 @@
 		 */
 		load: function( n ) {
 			this.title( n );
+			this.controls();
+			
+			console.log( 'load():', this.current );
 			
 			// already loaded
 			if( '' != $( '#photobox .photobox-placeholder' ).eq( n ).html() )
@@ -63,18 +66,20 @@
 			
 			var src = this.$items.eq( n ).attr( 'href' );
 			
+			// load image
 			function i() {
 				$( '#photobox .photobox-placeholder' ).eq( n ).html( $( '<img />' ).attr( 'src', src ) );
-				
-				setTimeout( function() {
-					c();
-				}, 1 );
 				
 				$( window ).resize( function() {
 					c();
 				} );
+				
+				setTimeout( function() {
+					c();
+				}, 1 );
 			}
 			
+			// center
 			function c() {
 				var placeholder = $( '#photobox .photobox-placeholder' ).eq( n );
 				var image = placeholder.find( 'img' );
@@ -90,7 +95,6 @@
 				return i();
 			
 			// do preload
-			// NOTE: IE loads image right after defining the src
 			var self = this;
 			var image = new Image();
 			image.onload = function() {
@@ -98,13 +102,14 @@
 				
 				i();
 			};
+			// NOTE: IE loads image right after defining the src
 			image.src = src;
 		},
 		
 		/**
 		 * Title
 		 *
-		 * Puts title from image's title attribute in Photobox title.
+		 * Puts title from link's title attribute in Photobox title.
 		 *
 		 * @param int n - Index of the item
 		 */
@@ -120,7 +125,7 @@
 		 * Removes #photobox markup to avoid conflicts.
 		 */
 		clear: function() {
-			// so far
+			// simple so far
 			$( '#photobox' ).remove();
 		},
 		
@@ -160,11 +165,11 @@
 					$( '<div />' ).addClass( 'photobox-placeholder' )
 				);
 			
-			this.controls();
-			this.keys();
+			this.shortcuts();
 			this.touchable();
 			
 			// toggle controls
+			// Not working so well...
 			/*$( '.photobox-wrapper' ).bind( 'click, tap', function( e ) {
 				self.toggleMeta();
 			} );
@@ -179,17 +184,32 @@
 		controls: function() {
 			var self = this;
 			
-			$( '#photobox .photobox-button-prev' ).click( function( e ) {
+			// previous
+			$( '#photobox .photobox-button-prev' ).unbind( 'click' ).click( function( e ) {
 				e.preventDefault();
 				
 				self.prev();
 			} );
-			$( '#photobox .photobox-button-next' ).click( function( e ) {
+			
+			if( 0 == this.current )
+				$( '#photobox .photobox-button-prev' ).hide();
+			else
+				$( '#photobox .photobox-button-prev' ).show();
+			
+			// next
+			$( '#photobox .photobox-button-next' ).unbind( 'click' ).click( function( e ) {
 				e.preventDefault();
 				
 				self.next();
 			} );
-			$( '#photobox .photobox-button-close' ).click( function( e ) {
+			
+			if( this.items.length - 1 == this.current )
+				$( '#photobox .photobox-button-next' ).hide();
+			else
+				$( '#photobox .photobox-button-next' ).show();
+			
+			// close
+			$( '#photobox .photobox-button-close' ).unbind( 'click' ).click( function( e ) {
 				e.preventDefault();
 				
 				self.close();
@@ -197,13 +217,13 @@
 		},
 		
 		/**
-		 * Map keys
+		 * Map keyboard
 		 */
-		keys: function() {
+		shortcuts: function() {
 			var self = this;
 			
 			$( document ).keydown( function( e ) {
-				self.fadeoutMeta();
+				//self.fadeoutMeta();
 				
 				switch( e.keyCode ) {
 					// left
@@ -243,10 +263,10 @@
 				startX = e.originalEvent.touches[0].pageX;
 			} ).bind( 'touchmove', function( e ) {
 				e.preventDefault();
+				
 				//self.fadeoutMeta();
 				
-				//$( this ).css( 'left', ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px' );
-				$( this ).css( '-webkit-transform', 'translateX(' + ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px)' );
+				$( this ).css( this._prefix() + 'transform', 'translateX(' + ( offsetX * -1 + ( startX - e.originalEvent.touches[0].pageX ) ) * -1 + 'px)' );
 			} ).bind( 'touchend', function() {
 				var n = Math.round( $( this ).position().left / width ) * -1;
 				
@@ -259,11 +279,11 @@
 				self.load( n );
 				
 				//$( this ).addClass( 'animate' ).css( 'left', n * -100 + '%' );
-				$( this ).addClass( 'animate' ).css( '-webkit-transform', 'translateX(' + n * ( width * -1 ) + 'px)' );
+				$( this ).addClass( 'animate' ).css( this._prefix() + 'transform', 'translateX(' + n * ( width * -1 ) + 'px)' );
 			} );
 			
-			// Not working properly. TODO: Edit this
-			// zoom/pinch
+			// TODO: Edit this. Not working properly.
+			// pinch/zoom
 			$( '#photobox .photobox-placeholder img' ).bind( 'gesturechange', function( e ) {
 				var scale = e.originalEvent.scale;
 				
@@ -287,8 +307,8 @@
 			
 			// offset to current
 			this.current = n;
-			var offset = this.current * 100 * -1;
-			$( '#photobox .photobox-wrapper' ).css( 'left', offset + '%' );
+			var offset = this.current * ( $( window ).width() * -1 );
+			$( '.photobox-wrapper' ).css( this._prefix() + 'transform', 'translateX(' + offset + 'px)' );
 			
 			// load image
 			this.load( n );
@@ -301,7 +321,6 @@
 		 * Close
 		 */
 		close: function() {
-			// so far
 			this.clear();
 		},
 		
@@ -319,14 +338,15 @@
 			if( 0 > this.current )
 				this.current = 0;
 			
+			console.log( 'prev():', this.current );
+			
 			this.load( this.current );
 			
 			// calc offset
 			var offset = this.current * ( $( window ).width() * -1 );
 			
 			// animate
-			//$( '.photobox-wrapper' ).addClass( 'animate' ).css( 'left', offset + '%' );
-			$( '.photobox-wrapper' ).addClass( 'animate' ).css( '-webkit-transform', 'translateX(' + offset + 'px)' );
+			$( '.photobox-wrapper' ).addClass( 'animate' ).css( this._prefix() + 'transform', 'translateX(' + offset + 'px)' );
 		},
 		
 		/**
@@ -343,6 +363,8 @@
 			if( this.items.length - 1 < this.current )
 				this.current = this.items.length - 1;
 			
+			console.log( 'next():', this.current );
+			
 			this.load( this.current );
 			
 			// calc offset
@@ -356,13 +378,12 @@
 				offset = last;*/
 			
 			//$( '.photobox-wrapper' ).addClass( 'animate' ).css( 'left', offset + '%' );
-			$( '.photobox-wrapper' ).addClass( 'animate' ).css( '-webkit-transform', 'translateX(' + offset + 'px)' );
+			$( '.photobox-wrapper' ).addClass( 'animate' ).css( this._prefix() + 'transform', 'translateX(' + offset + 'px)' );
 		},
 		
 		/**
 		 * Toggle meta
 		 *
-		 * Toggles meta.
 		 * TODO: figure out better implementation
 		 */
 		toggleMeta: function() {
@@ -376,7 +397,23 @@
 		 */
 		fadeoutMeta: function() {
 			$( '#photobox .photobox-title, #photobox .photobox-controls' ).fadeOut( 100 );
-		}
+		},
+		
+		/**
+		 * CSS vendor helper
+		 */
+		_prefix: function() {
+			if( 'WebkitTransform' in document.body.style )
+				return '-webkit-';
+			else if( 'MozTransform' in document.body.style )
+				return '-moz-';
+			else if( 'OTransform' in document.body.style )
+				return '-o-';
+			else if( 'MsTransform' in document.body.style )
+				return '-ms-';
+			else if( 'transform' in document.body.style )
+				return '';
+		},
 	};
 	
 	//Photobox.defaults = Photobox.prototype.defaults;
