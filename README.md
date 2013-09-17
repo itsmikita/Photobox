@@ -30,8 +30,14 @@ __0.3__
 * Added How-to
 * Updated code standard
 
+__0.5__
+* Fixed bug when loading any image but first
+* Removed fading controls (redesign this function later)
+* Prev/Next controls now disappear on first and last image
+* Added CSS3 support for all browsers (before: webkit only)
+
 Future plans
 ------------
-* Fix unwanted mobile behavior in latest Android and iOS
-* Simplify JS and CSS
-* Publish on a CDN network
+* Fix tilt/zoom (now buggy)
+* Simplify the code even more
+* Fallback CSS (in case styles are not loaded, for easier implementation)
