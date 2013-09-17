@@ -8,9 +8,9 @@ Demo: http://designed.bymikita.com/photobox/example/
 How to use
 ----------
 
-1. Include jQuery and `photobox.min.js` in your document.
-2. Add links to full source images.
-3. Apply Photobox on these links, like `$( 'a.photobox-image' ).photobox();`.
+1. Include jQuery and `photobox.min.js` in your document
+2. Add `<a>` with URLs to full-size images
+3. Apply Photobox on these links, like `$( 'a.photobox-image' ).photobox();`
 
 Changelog
 ---------
