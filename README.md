@@ -1,5 +1,5 @@
-jQuery Photobox
-===============
+Photobox
+========
 
 Photobox is a responsive and mobile optimized gallery slideshow plugin.
 
