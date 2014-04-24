@@ -8,9 +8,7 @@ Demo: http://designed.bymikita.com/photobox/example/
 How to use
 ----------
 
-1. Include jQuery and `photobox.min.js` in your document
-2. Add `<a>` with URLs to full-size images
-3. Apply Photobox on these links, like `$( 'a.photobox-image' ).photobox();`
+Simply add `$( '.photobox' ).photobox()` where `.photobox` is an anchor(s) linked to full size image.
 
 Changelog
 ---------
@@ -35,9 +33,11 @@ __0.5__
 * Removed fading controls (redesign this function later)
 * Prev/Next controls now disappear on first and last image
 * Added CSS3 support for all browsers (before: webkit only)
+* Removed minimized version `photobox.min.js`
+
+__0.6__
+* Skip duplicate images
 
 Future plans
 ------------
-* Fix tilt/zoom (now buggy)
-* Simplify the code even more
-* Fallback CSS (in case styles are not loaded, for easier implementation)
+* Fix tilt/zoom on touch (now buggy)

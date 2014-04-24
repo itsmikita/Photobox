@@ -1,18 +1,44 @@
 /**
- * @file: photobox.js
- *
  * Author: Mikita Stankiewicz
- * URL: http://designed.bymikita.com/photobox/
- * Version: 0.5
+ * URL: https://github.com/itsmikita/Photobox
+ * Version: 0.6
  */
 
-;( function( $, window, document, undefined ) {
+;( function( $ ) {
+	/**
+	 * Array unique
+	 */
+	function unique( array ) {
+		var unique = [];
+		
+		for( var x in array )
+			if( -1 == $.inArray( array[ x ], unique ) )
+				unique.push( array[ x ] );
+		
+		return unique;
+   	};
+	
 	/**
 	 * Constructor
 	 */
-	var Photobox = function( items, options ) {
-		this.$items = $( items );
-		this.options = options; // not used so far
+	var Photobox = function( selector ) {
+		var self = this
+			items = [];
+		
+		self.$items = $( selector );
+		self.$items.each( function() {
+			var image = $( this ).attr( 'href' );
+			
+			items.push( image );
+			
+			$( this ).click( function( event ) {
+				event.preventDefault();
+				
+				self.open( self.items.indexOf( image ) );
+			} );
+		} );
+		
+		self.items = unique( items );
 	};
 	
 	/**
@@ -28,26 +54,6 @@
 		config: {},
 		
 		/**
-		 * Init
-		 */
-		init: function() {
-			// config
-			this.config = $.extend( {}, this.defaults, this.options );
-			
-			var self = this;
-			
-			this.$items.each( function( n ) {
-				self.items.push( $( this ).attr( 'href' ) );
-				
-				$( this ).click( function( e ) {
-					e.preventDefault();
-					
-					self.open( n );
-				} );
-			} );
-		},
-		
-		/**
 		 * Load image
 		 *
 		 * Loads selected item into Photobox.
@@ -57,8 +63,6 @@
 		load: function( n ) {
 			this.title( n );
 			this.controls();
-			
-			console.log( 'load():', this.current );
 			
 			// already loaded
 			if( '' != $( '#photobox .photobox-placeholder' ).eq( n ).html() )
@@ -102,6 +106,7 @@
 				
 				i();
 			};
+			
 			// NOTE: IE loads image right after defining the src
 			image.src = src;
 		},
@@ -338,8 +343,6 @@
 			if( 0 > this.current )
 				this.current = 0;
 			
-			console.log( 'prev():', this.current );
-			
 			this.load( this.current );
 			
 			// calc offset
@@ -362,8 +365,6 @@
 			
 			if( this.items.length - 1 < this.current )
 				this.current = this.items.length - 1;
-			
-			console.log( 'next():', this.current );
 			
 			this.load( this.current );
 			
@@ -423,11 +424,11 @@
 	 *
 	 * @param object options - Options
 	 */
-	$.fn.photobox = function( options ) {
-		new Photobox( this, options ).init();
+	$.fn.photobox = function() {
+		new Photobox( this );
 		
 		return this;
 	};
 	
 	//window.Photobox = Photobox;
-} )( jQuery, window, document );
+} )( jQuery );
